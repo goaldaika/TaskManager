@@ -1,0 +1,61 @@
+﻿@model Programmer
+
+<h1 class="display-4 fw-normal text-center mb-5">Delete Programmer</h1>
+
+<div class="container">
+    <h2 class="fw-normal mb-3">Are you sure you want to delete this programmer?</h2>
+    <div class="card">
+        <div class="card-body">
+            <form method="post" asp-action="DeleteProgrammer">
+                <input type="hidden" asp-for="id" />
+
+                <div class="form-group">
+                    <label asp-for="fname">First Name</label>
+                    <input asp-for="fname" class="form-control" placeholder="First Name" readonly>
+                </div>
+                <div class="form-group">
+                    <label asp-for="lname">Last Name</label>
+                    <input asp-for="lname" class="form-control" placeholder="Last Name" readonly>
+                </div>
+                <div class="form-group">
+                    <label asp-for="email">Email</label>
+                    <input asp-for="email" class="form-control" placeholder="Email" readonly>
+                </div>
+                <div class="form-group">
+                    <label asp-for="address">Address</label>
+                    <input asp-for="address" class="form-control" placeholder="Address" readonly>
+                </div>
+                <div class="form-group">
+                    <label asp-for="phonenumber">Phone Number</label>
+                    <input asp-for="phonenumber" class="form-control" placeholder="Phone Number" readonly>
+                </div>
+
+                <h4 class="mt-4">Assignments:</h4>
+                @if (Model.assignments != null && Model.assignments.Any())
+                {
+                    <ul>
+                        @foreach (var assignment in Model.assignments)
+                        {
+                            <li class="list-group-item">@assignment.name - @assignment.state (@assignment.estimateHours hrs)</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>No assignments found for this programmer.</p>
+                }
+
+                <div class="form-group mt-4">
+                    <form method="post" asp-action="Delete">
+                        <input type="hidden" asp-for="id" />
+                        <div class="form-group mt-4">
+                            <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                            <a class="btn btn-secondary" href="@Url.Action("Index", "Home")">Cancel</a>
+                        </div>
+                    </form>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

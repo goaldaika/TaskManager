@@ -1,0 +1,48 @@
+﻿@model Assignment
+@using TaskManagement.Data.Enum;
+@{
+    ViewData["Title"] = "Update Assignment";
+    var stateSelectList = new SelectList(Enum.GetValues(typeof(State)));
+    // Assume ViewData["Programmers"] and ViewData["ParentAssignments"] are IEnumerable<SelectListItem>
+}
+
+<h1 class="display-4 fw-normal text-center mb-5">Update Assignment</h1>
+
+<div class="container">
+    <form asp-action="Edit">
+        <input type="hidden" asp-for="id" />
+
+        <div class="form-group">
+            <label asp-for="name">Name</label>
+            <input asp-for="name" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label asp-for="description">Description</label>
+            <input asp-for="description" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label asp-for="state">State</label>
+            <select asp-for="state" asp-items="stateSelectList" class="form-control"></select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="estimateHours">Estimate Hours</label>
+            <input asp-for="estimateHours" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ParentId" class="control-label">Parent Assignment</label>
+            <select asp-for="ParentId" class="form-control" asp-items="@(ViewData["ParentAssignments"] as SelectList)"></select>
+        </div>
+
+        <div class="form-group">
+            <label>Assigned Programmer</label>
+            <select asp-for="ProgrammerId" class="form-control" asp-items="@(ViewData["Programmers"] as IEnumerable<SelectListItem>)"></select>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>

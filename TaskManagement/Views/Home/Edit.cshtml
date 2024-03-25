@@ -1,0 +1,47 @@
+﻿@model TaskManagement.ViewModel.UpdateProgrammerViewModel
+
+@{
+    var unassignedAssignments = ViewBag.UnassignedAssignments as List<Assignment>;
+}
+
+<h1 class="display-4 fw-normal text-center mb-5">Update Programmer</h1>
+
+<div class="container">
+    <form method="post">
+        <input type="hidden" asp-for="Programmer.id" />
+
+        <div class="form-group">
+            <label asp-for="Programmer.fname">First Name</label>
+            <input asp-for="Programmer.fname" class="form-control">
+        </div>
+        <div class="form-group">
+            <label asp-for="Programmer.lname">Last Name</label>
+            <input asp-for="Programmer.lname" class="form-control">
+        </div>
+        <div class="form-group">
+            <label asp-for="Programmer.email">Email</label>
+            <input asp-for="Programmer.email" class="form-control">
+        </div>
+        <div class="form-group">
+            <label asp-for="Programmer.address">Address</label>
+            <input asp-for="Programmer.address" class="form-control">
+        </div>
+        <div class="form-group">
+            <label asp-for="Programmer.phonenumber">Phone Number</label>
+            <input asp-for="Programmer.phonenumber" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="assignments">Assignments</label>
+            <select asp-for="SelectedAssignments" asp-items="@Model.AvailableAssignments" class="form-control" multiple="multiple">
+            </select>
+            <div>Note: To select multiple task, using Ctrl+Left Mouse on unselected task.</div>
+            <div>Note: To de-select a task, using Ctrl+Left Mouse on selected task.</div>
+        </div>
+
+        <div class="form-group mt-4">
+            <button type="submit" class="btn btn-primary">Update Programmer</button>
+            <a class="btn btn-secondary" href="@Url.Action("Index", "Home")">Cancel</a>
+        </div>
+    </form>
+</div>

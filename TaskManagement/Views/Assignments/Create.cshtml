@@ -1,0 +1,43 @@
+﻿@model Assignment
+
+<h1 class="display-4 fw-normal text-center mb-5">Create New Assignment</h1>
+
+<div class="container">
+    <form method="post" asp-action="Create">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <label asp-for="name">Name</label>
+                    <input asp-for="name" class="form-control" placeholder="Enter assignment name">
+                </div>
+                <div class="form-group">
+                    <label asp-for="description">Description</label>
+                    <textarea asp-for="description" class="form-control" placeholder="Enter assignment description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label asp-for="estimateHours">Estimate Hours</label>
+                    <input asp-for="estimateHours" type="number" class="form-control" placeholder="Enter estimated hours">
+                </div>
+                <!-- Parent Assignment Dropdown -->
+                <div class="form-group">
+                    <label asp-for="ParentId">Parent Assignment (Optional)</label>
+                    <select asp-for="ParentId" asp-items="ViewBag.AvailableParents" class="form-control">
+                        <option value="">-- Select Parent Assignment --</option>
+                    </select>
+                </div>
+
+                <!-- Assigned Programmer Dropdown -->
+                <div class="form-group">
+                    <label asp-for="ProgrammerId">Assigned Programmer (Optional)</label>
+                    <select asp-for="ProgrammerId" asp-items="ViewBag.AvailableProgrammers" class="form-control">
+                        <option value="">-- Select Programmer --</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary">Create Assignment</button>
+            <a class="btn btn-secondary" href="@Url.Action("Index", "Assignments")">Cancel</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,47 @@
+﻿@model Programmer
+@{
+    ViewData["Title"] = "Create Programmer";
+}
+
+<h1 class="display-4 fw-normal text-center mb-5">@ViewData["Title"]</h1>
+
+<div class="container">
+    <form asp-action="Create">
+        <div class="form-group">
+            <label asp-for="fname">First Name</label>
+            <input asp-for="fname" class="form-control" />
+            <span asp-validation-for="fname" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="lname">Last Name</label>
+            <input asp-for="lname" class="form-control" />
+            <span asp-validation-for="lname" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="email">Email</label>
+            <input asp-for="email" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="address">Address</label>
+            <input asp-for="address" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="phonenumber">Phone Number</label>
+            <input asp-for="phonenumber" class="form-control" />
+        </div>
+        <!-- Include other fields here -->
+
+        <div class="form-group">
+            <label for="selectedAssignmentId">Assignments</label>
+            <select class="form-control" id="selectedAssignmentId" name="selectedAssignmentId">
+                <option value="">Select an Assignment (Optional)</option>
+                @foreach (var assignment in (SelectList)ViewBag.UnassignedAssignments)
+                {
+                    <option value="@assignment.Value">@assignment.Text</option>
+                }
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+</div>
