@@ -26,5 +26,5 @@ To set up the application's database:
    "DefaultConnection": "Your database connection string goes here"
  }
 ```
-4. Execute the Update-Database command in the Package Manager Console.
+4. Execute the `Update-Database` command in the Package Manager Console.
 5. Run the application and test the provided features.
