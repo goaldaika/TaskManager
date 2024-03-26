@@ -34,13 +34,13 @@ namespace TaskManagement.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            var assignment = await _assignment.GetByIDAsync(id);
+            var assignment = await _assignment.GetByIDAsync((int)id);
             if (assignment == null)
             {
                 return NotFound();
@@ -80,7 +80,7 @@ namespace TaskManagement.Controllers
             return View(details);
         }
         [HttpPost, ActionName("DeleteAssignment")]
-        public async Task<IActionResult> DeleteProgrammer(int id)
+        public async Task<IActionResult> DeleteAssignment(int id)
         {
             var details = await _assignment.GetByIDAsync(id);
             if (details == null) return View("Error");
