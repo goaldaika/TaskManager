@@ -1,12 +1,12 @@
 ﻿@model Assignment
 
-<h1 class="display-4 fw-normal text-center mb-5">Delete Programmer</h1>
+<h1 class="display-4 fw-normal text-center mb-5">Details</h1>
 
 <div class="container">
-    <h2 class="fw-normal mb-3">Are you sure you want to delete this assignment?</h2>
+    <h2 class="fw-normal mb-3">@Model.name</h2>
     <div class="card">
         <div class="card-body">
-            <form method="post" asp-action="DeleteAssignment">
+            <form method="post" asp-action="Details">
                 <input type="hidden" asp-for="id" />
 
                 <div class="form-group">
@@ -41,14 +41,10 @@
 
 
                 <div class="form-group mt-4">
-                    <form method="post" asp-action="Delete">
-                        <input type="hidden" asp-for="id" />
-                        <div class="form-group mt-4">
-                            <button type="submit" class="btn btn-danger">Confirm Delete</button>
-                            <a class="btn btn-secondary" href="@Url.Action("Index", "Home")">Cancel</a>
-                        </div>
-                    </form>
-
+                    <input type="hidden" asp-for="id" />
+                    <div class="form-group mt-4">
+                        <a class="btn btn-secondary" href="@Url.Action("Index", "Home")">Confirm</a>
+                    </div>
                 </div>
             </form>
         </div>

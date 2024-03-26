@@ -56,7 +56,6 @@ namespace TaskManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Assign the selected assignment to the programmer, if necessary
                 if (selectedAssignmentId != 0)
                 {
                     var assignment = _ctx.Assignments.FirstOrDefault(a => a.id == selectedAssignmentId);
@@ -66,13 +65,11 @@ namespace TaskManagement.Controllers
                             programmer.assignments = new List<Assignment>();
 
                         programmer.assignments.Add(assignment);
-                        assignment.ProgrammerId = programmer.id; // Link the assignment to the new programmer
+                        assignment.ProgrammerId = programmer.id;
                     }
                 }
 
-                // Add the programmer (with the assignment) to the context and save
-                _ctx.Add(programmer);
-                _ctx.SaveChanges();
+                _programmer.Add(programmer);
 
                 return RedirectToAction("Index");
             }
@@ -117,12 +114,11 @@ namespace TaskManagement.Controllers
             {
                 try
                 {
-                    // The 'Update' method now also takes care of assignment updates.
                     bool updateSucceeded = _programmer.Update(model.Programmer, model.SelectedAssignments);
 
                     if (!updateSucceeded)
                     {
-                        return View("Error"); // Or handle the error as you see fit
+                        return View("Error"); 
                     }
                 }
                 catch (DbUpdateConcurrencyException)
@@ -140,6 +136,20 @@ namespace TaskManagement.Controllers
             }
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+        public IActionResult ShowStatistics()
+        {
+            var programmers = _ctx.Programmers.Include(p => p.assignments).ToList();
+            var viewModelList = programmers.Select(p => new ProgrammerStatisticsViewModel
+            {
+                FirstName = p.fname,
+                LastName = p.lname,
+                HoursByState = p.assignments
+                               .GroupBy(a => a.state.ToString())
+                               .ToDictionary(g => g.Key, g => g.Sum(a => a.estimateHours))
+            }).ToList();
+
+            return View(viewModelList); 
         }
 
     }

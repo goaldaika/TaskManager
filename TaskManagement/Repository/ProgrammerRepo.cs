@@ -70,8 +70,7 @@ namespace TaskManagement.Repository
             currentProgrammer.address = updatedProgrammer.address;
             currentProgrammer.phonenumber = updatedProgrammer.phonenumber;
 
-            // Handle assignments
-            // First, remove any assignments that are no longer selected
+            //Remove any assignments that are no longer selected
             var assignmentsToRemove = currentProgrammer.assignments
                 .Where(a => !selectedAssignmentIds.Contains(a.id)).ToList();
 
@@ -81,7 +80,7 @@ namespace TaskManagement.Repository
                 currentProgrammer.assignments.Remove(assignment);
             }
 
-            // Then, add new assignments that were selected but not previously associated
+            //Add new assignments that were selected but not previously associated
             var currentAssignmentIds = currentProgrammer.assignments.Select(a => a.id).ToList();
             var assignmentsToAdd = _ctx.Assignments
                 .Where(a => selectedAssignmentIds.Contains(a.id) && !currentAssignmentIds.Contains(a.id)).ToList();

@@ -34,6 +34,20 @@ namespace TaskManagement.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Details(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var assignment = await _assignment.GetByIDAsync(id);
+            if (assignment == null)
+            {
+                return NotFound();
+            }
+            return View(assignment);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [HttpPost, ActionName("Create")]
@@ -94,7 +108,18 @@ namespace TaskManagement.Controllers
                                                          .ToList();
 
             ViewData["ParentAssignments"] = new SelectList(parentAssignmentsSelectList, "id", "name", assignment.ParentId);
-            ViewData["Programmers"] = new SelectList(_ctx.Programmers, "id", "fname", assignment.ProgrammerId);
+
+            ViewData["Programmers"] = new SelectList(
+                _ctx.Programmers
+                    .Select(p => new {
+                        p.id,
+                        FullName = $"{p.fname} {p.lname}" 
+                    })
+                    .ToList(),
+                "id",
+                "FullName"
+            );
+
 
             return View(assignment);
         }
@@ -113,7 +138,7 @@ namespace TaskManagement.Controllers
                     bool updateResult = _assignment.Update(assignment);
                     if (!updateResult)
                     {
-                        return NotFound(); // Or handle the failure as appropriate
+                        return NotFound(); 
                     }
                     await _ctx.SaveChangesAsync();
                 }
@@ -130,12 +155,54 @@ namespace TaskManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            // Repopulate ViewData if we're returning to the form due to validation failure
             ViewData["ParentId"] = new SelectList(_ctx.Assignments.Where(a => a.state != State.Closed), "id", "name", assignment.ParentId);
-            ViewData["ProgrammerId"] = new SelectList(_ctx.Programmers, "id", "fname", assignment.ProgrammerId);
+
+            ViewData["Programmers"] = new SelectList(
+                _ctx.Programmers
+                    .Select(p => new {
+                        p.id,
+                        FullName = $"{p.fname} {p.lname}" 
+                    })
+                    .ToList(),
+                "id",
+                "FullName"
+            );
+
 
             return View(assignment);
         }
+
+        [HttpGet]
+        [Route("Assignments/Filter")]
+        public IActionResult Index(string name, string surname, DateTime? startDate, DateTime? closingDate)
+        {
+            var assignments = from a in _assignment.GetAll()
+                              select a;
+
+            if (!String.IsNullOrEmpty(name))
+            {
+                assignments = assignments.Where(s => s.AssignedProgrammer.fname.Contains(name));
+            }
+
+            if (!String.IsNullOrEmpty(surname))
+            {
+                assignments = assignments.Where(s => s.AssignedProgrammer.lname.Contains(surname));
+            }
+
+            if (startDate.HasValue)
+            {
+                assignments = assignments.Where(s => s.startDate >= startDate.Value);
+            }
+
+            if (closingDate.HasValue)
+            {
+                assignments = assignments.Where(s => s.closingDate.HasValue && s.closingDate.Value <= closingDate.Value);
+            }
+
+            return View(assignments.ToList());
+        }
+
+
 
     }
 

@@ -1,0 +1,29 @@
+﻿@model IEnumerable<TaskManagement.ViewModel.ProgrammerStatisticsViewModel>
+
+<h1 class="display-4 fw-normal text-center mb-5">Programmer Statistics</h1>
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Programmer Name</th>
+                @foreach (var state in Enum.GetNames(typeof(TaskManagement.Data.Enum.State)))
+                {
+                    <th>@state Hours</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var programmer in Model)
+            {
+                <tr>
+                    <td>@programmer.FirstName @programmer.LastName</td>
+                    @foreach (var state in Enum.GetNames(typeof(TaskManagement.Data.Enum.State)))
+                    {
+                        <td>@programmer.HoursByState.GetValueOrDefault(state, 0)</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -19,6 +19,7 @@ namespace TaskManagement.Models
         public int? ProgrammerId { get; set; } // Foreign key to the Programmer
         public Programmer? AssignedProgrammer { get; set; } // Navigation property
 
+
         public Assignment()
         {
             Child = new HashSet<Assignment>();

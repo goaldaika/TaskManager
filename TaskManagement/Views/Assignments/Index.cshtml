@@ -6,6 +6,29 @@
 <div class="text-center mb-4">
     <a class="btn btn-primary" asp-area="" asp-controller="Assignments" asp-action="Create">Add Assignment</a>
 </div>
+@using (Html.BeginForm("Index", "Assignments", FormMethod.Get))
+{
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <label for="startDate">Start Date</label>
+            <input type="date" class="form-control" id="startDate" name="startDate">
+        </div>
+        <div class="form-group col-md-3">
+            <label for="closingDate">Closing Date</label>
+            <input type="date" class="form-control" id="closingDate" name="closingDate">
+        </div>
+        <div class="form-group col-md-3">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="Programmer name" placeholder="Enter Name">
+        </div>
+        <div class="form-group col-md-3">
+            <label for="surname">Surname</label>
+            <input type="text" class="form-control" id="surname" name="Programmer surname" placeholder="Enter Surname">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary mb-2">Filter</button>
+}
+
 <div class="album py-5 bg-light">
     <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -42,6 +65,20 @@
                                     @:
                                 }
                             </p>
+                            <p class="card-text"><strong>Subtasks:</strong></p>
+                            @if (item.Child != null && item.Child.Any())
+                            {
+                                <ul>
+                                    @foreach (var child in item.Child)
+                                    {
+                                        <li>@child.name - @child.description</li>
+                                    }
+                                </ul>
+                                                        }
+                            else
+                            {
+                                <p>No subtasks</p>
+                            }
                             <div class="d-flex justify-content-between align-items-center mt-4">
                                 <div class="btn-group">
                                     <a asp-controller="Assignments" asp-action="Details" asp-route-id="@item.id" class="btn btn-sm btn-info">View</a>

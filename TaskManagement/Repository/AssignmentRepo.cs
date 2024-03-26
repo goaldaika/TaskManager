@@ -13,6 +13,7 @@ namespace TaskManagement.Repository
         {
             _ctx = ctx;
         }
+
         public bool Add(Assignment assignment)
         {
             _ctx.Add(assignment);
@@ -59,7 +60,9 @@ namespace TaskManagement.Repository
 
         public async Task<Assignment> GetByIDAsync(int id)
         {
-            return await _ctx.Assignments.FirstOrDefaultAsync(i => i.id == id);
+            return await _ctx.Assignments
+        .Include(a => a.AssignedProgrammer)
+        .FirstOrDefaultAsync(i => i.id == id);
         }
 
         public bool Save()
@@ -73,7 +76,6 @@ namespace TaskManagement.Repository
             var existingAssignment = _ctx.Assignments.FirstOrDefault(a => a.id == assignment.id);
             if (existingAssignment != null)
             {
-                // Copy properties you want to update
                 existingAssignment.name = assignment.name;
                 existingAssignment.description = assignment.description;
                 existingAssignment.state = assignment.state;
@@ -81,7 +83,6 @@ namespace TaskManagement.Repository
                 existingAssignment.ParentId = assignment.ParentId;
                 existingAssignment.ProgrammerId = assignment.ProgrammerId;
 
-                // Special logic for dates based on state
                 if (assignment.state == State.Closed)
                 {
                     existingAssignment.closingDate = DateTime.Now;
